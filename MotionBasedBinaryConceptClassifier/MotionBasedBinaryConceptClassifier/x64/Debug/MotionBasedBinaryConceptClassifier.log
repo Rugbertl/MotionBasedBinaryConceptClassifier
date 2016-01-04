@@ -1,0 +1,20 @@
+﻿Build started 4/01/2016 3:32:29 PM.
+     1>Project "C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedBinaryConceptClassifier\MotionBasedBinaryConceptClassifier\MotionBasedBinaryConceptClassifier.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\build\x64\vc12\..\..\include /ZI /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt OpticalFlow.cpp Source.cpp
+         Source.cpp
+         OpticalFlow.cpp
+     1>c:\users\peter\documents\visual studio 2015\projects\motionbasedbinaryconceptclassifier\motionbasedbinaryconceptclassifier\opticalflow.cpp(68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\peter\documents\visual studio 2015\projects\motionbasedbinaryconceptclassifier\motionbasedbinaryconceptclassifier\opticalflow.cpp(69): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+         Generating Code...
+     1>c:\users\peter\documents\visual studio 2015\projects\motionbasedbinaryconceptclassifier\motionbasedbinaryconceptclassifier\opticalflow.cpp(91): warning C4715: 'main1': not all control paths return a value
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedBinaryConceptClassifier\x64\Debug\MotionBasedBinaryConceptClassifier.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\x64\vc12\lib opencv_ts300.lib opencv_world300.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedBinaryConceptClassifier\x64\Debug\MotionBasedBinaryConceptClassifier.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedBinaryConceptClassifier\x64\Debug\MotionBasedBinaryConceptClassifier.lib" /MACHINE:X64 x64\Debug\OpticalFlow.obj
+         x64\Debug\Source.obj
+         x64\Debug\FeatureExtraction.obj
+         MotionBasedBinaryConceptClassifier.vcxproj -> C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedBinaryConceptClassifier\x64\Debug\MotionBasedBinaryConceptClassifier.exe
+     1>Done Building Project "C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedBinaryConceptClassifier\MotionBasedBinaryConceptClassifier\MotionBasedBinaryConceptClassifier.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.82
