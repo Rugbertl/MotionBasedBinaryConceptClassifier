@@ -1,4 +1,3 @@
-#include <opencv2\highgui\highgui.hpp>
 #include <opencv2\imgproc.hpp>
 #include <opencv2/core/core.hpp>
 #include "opencv2/opencv.hpp"
@@ -12,33 +11,40 @@
 using namespace std;
 using namespace cv;
 
-void samplePoints(Mat gray, vector<Point2f> currFeatures);
+vector<Point2f> samplePoints(Mat gray);
 
-int main1(int argc, char** argv)
+int main(int argc, char** argv)
 {
-	// use web cam for testing purpose
-	VideoCapture capture(0);
+	string filename = "C:/Users/peter/Study/Semester7/VideoRetrieval/project/oberstdorf08small.mp4";
+
+	VideoCapture capture(filename);
 
 	if (!capture.isOpened())
 	{
-		cout << "error at opening camera" << endl;
+		cout << "error at opening video" << endl;
 		return 1;
 	}
 
 	vector<Point2f> currFeatures;
 	vector<Point2f> prevFeatures;
-	
+
 	int count = 0;
-	Mat frame, gray, prevFrame;
-	
-	while (capture.read(frame))
+	Mat fullframe, frame, gray, prevFrame;
+
+	while (capture.read(fullframe))
 	{
-		// convert to grayscale (for optical flow estimation)
-		cvtColor(frame, gray, CV_RGB2GRAY);
+		//resize for sake of better demonstration
+		//resize(fullframe, frame, Size(fullframe.cols / 2, fullframe.rows / 2));
 		
-		// Obtain initial set of features
-		//goodFeaturesToTrack(gray, currFeatures, 100, 0.01, 10);
-		
+		//convert to grayscale (for optical flow estimation)
+		cvtColor(fullframe, gray, CV_RGB2GRAY);
+
+		//perform dense sampling of points)
+		currFeatures = samplePoints(gray);
+
+		//Obtain initial set of features
+		//goodFeaturesToTrack(gray, currFeatures, 100, 0.01, 20);
+
 		//cv::goodFeaturesToTrack(image_next, // the image 
 		//	features_next,   // the output detected features
 		//	max_count,  // the maximum number of features 
@@ -46,43 +52,38 @@ int main1(int argc, char** argv)
 		//	minDist     // min distance between two features
 		//	);
 
-		//perform dense sampling of points)
-		// TODO: 
-		//samplePoints(gray, currFeatures);
+		//optical flow estimation
+		vector<uchar>  status;
+		vector<float>  err;
 
-		// optical flow estimation
-		vector<uchar> status;
-		vector<float> err;
-		
 		if (prevFeatures.size() == currFeatures.size())
 		{
 			calcOpticalFlowPyrLK(prevFrame, gray, prevFeatures, currFeatures, status, err);
 		}
 
-		// visualize result:
+		// visualize  result:
 		for (int i = 0; i < status.size(); i++)
 		{
-			// point could be found
-			if (status[i] != 0)
-			{ 
+			if (status[i] != 0) { //point  could  be found
 				Point pt1(ceil(prevFeatures[i].x), ceil(prevFeatures[i].y));
 				Point pt2(ceil(currFeatures[i].x), ceil(currFeatures[i].y));
 				line(frame, pt1, pt2, Scalar(255, 255, 255));
 			}
 		}
 
-		imshow("Frame", frame);
+		//imshow("Frame", frame);
+		imshow("Frame", fullframe);
 
-		// next time continue with current features
+		//next time  continue with current features
 		prevFeatures = currFeatures;
 		prevFrame = gray.clone();
 
-		// key handling (reset points)
+		//key handling (reset points)
 		int key = waitKey(5);
 
 		if (key == 32)
 		{
-			prevFeatures.clear();  // force new sampling in next step
+			prevFeatures.clear();  //force  new sampling  in next  step
 		}
 	}
 
@@ -90,18 +91,21 @@ int main1(int argc, char** argv)
 	capture.release();
 }
 
-
-void samplePoints(Mat gray, vector<Point2f> currFeatures)
+vector<Point2f> samplePoints(Mat gray)
 {
+	vector<Point2f> currFeatures;
+
 	for (int x = 0; x < gray.cols; x++)
 	{
 		for (int y = 0; y < gray.rows; y++)
 		{
 			if (x % 4 == 0 && y % 4 == 0)
 			{
-				Point2f point = Point(x, y);
+				Point2f point = Point2f(x, y);
 				currFeatures.push_back(point);
 			}
 		}
 	}
+
+	return currFeatures;
 }
