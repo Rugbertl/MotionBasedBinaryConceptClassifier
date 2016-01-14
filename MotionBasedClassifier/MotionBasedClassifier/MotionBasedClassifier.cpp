@@ -239,6 +239,9 @@ void AddValuesToHistogram(int histogramValues[], vector<Point2f> prevFeatures, v
 // distinguish in this example between 13 directions including non-direction
 int CalculateHistogramIndex(float degree)
 {
+	// optimze here
+	degree = round(degree);
+
 	if (degree == 0)
 		return 0;
 	else if (degree <= 15 && degree > 345 && degree < 360) // exclusive [15-0) (359-344]
