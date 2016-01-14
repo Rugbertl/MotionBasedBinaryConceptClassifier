@@ -1,0 +1,20 @@
+﻿Build started 13/01/2016 1:36:32 PM.
+     1>Project "C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedClassifier\MotionBasedClassifier\MotionBasedClassifier.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedClassifier\Debug\MotionBasedClassifier.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\install\x86\vc14\lib opencv_calib3d300d.lib opencv_flann300d.lib opencv_hal300d.lib opencv_imgcodecs300d.lib opencv_imgproc300d.lib opencv_ml300d.lib opencv_objdetect300d.lib opencv_photo300d.lib opencv_shape300d.lib opencv_stitching300d.lib opencv_superres300d.lib opencv_ts300d.lib opencv_video300d.lib opencv_videoio300d.lib opencv_videostab300d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedClassifier\Debug\MotionBasedClassifier.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedClassifier\Debug\MotionBasedClassifier.lib" /MACHINE:X86 Debug\MotionBasedClassifier.obj
+         Debug\stdafx.obj
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "void __cdecl cv::fastFree(void *)" (?fastFree@cv@@YAXPAX@Z) referenced in function "public: __thiscall cv::Mat::~Mat(void)" (??1Mat@cv@@QAE@XZ)
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "private: char * __thiscall cv::String::allocate(unsigned int)" (?allocate@String@cv@@AAEPADI@Z) referenced in function "public: __thiscall cv::String::String(char const *)" (??0String@cv@@QAE@PBD@Z)
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "private: void __thiscall cv::String::deallocate(void)" (?deallocate@String@cv@@AAEXXZ) referenced in function "public: __thiscall cv::String::~String(void)" (??1String@cv@@QAE@XZ)
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "class cv::_InputOutputArray const & __cdecl cv::noArray(void)" (?noArray@cv@@YAABV_InputOutputArray@1@XZ) referenced in function _main
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "public: void __thiscall cv::Mat::copyTo(class cv::_OutputArray const &)const " (?copyTo@Mat@cv@@QBEXABV_OutputArray@2@@Z) referenced in function "public: class cv::Mat __thiscall cv::Mat::clone(void)const " (?clone@Mat@cv@@QBE?AV12@XZ)
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "public: void __thiscall cv::Mat::deallocate(void)" (?deallocate@Mat@cv@@QAEXXZ) referenced in function "public: void __thiscall cv::Mat::release(void)" (?release@Mat@cv@@QAEXXZ)
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "public: void __thiscall cv::Mat::copySize(class cv::Mat const &)" (?copySize@Mat@cv@@QAEXABV12@@Z) referenced in function "public: __thiscall cv::Mat::Mat(class cv::Mat const &)" (??0Mat@cv@@QAE@ABV01@@Z)
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "int __cdecl cv::waitKey(int)" (?waitKey@cv@@YAHH@Z) referenced in function _main
+     1>MotionBasedClassifier.obj : error LNK2019: unresolved external symbol "void __cdecl cv::imshow(class cv::String const &,class cv::_InputArray const &)" (?imshow@cv@@YAXABVString@1@ABV_InputArray@1@@Z) referenced in function _main
+     1>C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedClassifier\Debug\MotionBasedClassifier.exe : fatal error LNK1120: 9 unresolved externals
+     1>Done Building Project "C:\Users\peter\Documents\Visual Studio 2015\Projects\MotionBasedClassifier\MotionBasedClassifier\MotionBasedClassifier.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.34
