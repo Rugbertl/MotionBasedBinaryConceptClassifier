@@ -12,47 +12,37 @@ using namespace std;
 using namespace cv;
 
 // prototypes
-void calculateHistogram();
 vector<string> GetGroundTruthValues(string filePath);
-vector<string> &split(const string &s, char delim, vector<string> &elems);
+void VisulizeGroundTruthValues(vector<string> values);
+void VisulizeOpticalFlow(Mat &frame, vector<Point2f> prevFeatures, vector<Point2f> currFeatures, vector<uchar> status);
+void VisulizeHistogramValues(int histogram[]);
 void AddValuesToHistogram(int histogramValues[], vector<Point2f> prevFeatures, vector<Point2f> currFeatures, vector<uchar> status);
 int CalculateHistogramIndex(float degree);
-void PrintGroundTruthValues(vector<string> values);
+vector<string> &split(const string &s, char delim, vector<string> &elems);
 
 string const DEFAULT_PATH1 = "C:/Users/peter/Study/Semester7/VideoRetrieval/project/GroundTruth.csv";
 string const DEFAULT_PATH2 = "C:/Users/peter/Study/Semester7/VideoRetrieval/project/oberstdorf08small.mp4";
-long double M_PIl = 3.141592653589793238462643383279502884;
+long double const M_PIl = 3.141592653589793238462643383279502884;
+int const NR_OF_BINS = 13;
 
 int main(int argc, char **argv)
 {
+	// preparation
 	vector<string> groundTruthValues;
-
 	// check if a user has specified a non default ground truth
 	if (argc > 1)
-	{
 		groundTruthValues = GetGroundTruthValues(argv[1]);
-	}
 	else
-	{
 		groundTruthValues = GetGroundTruthValues(DEFAULT_PATH1);
-	}
-
-	//
-	// OPTICAL FLOW
-	//
 
 	VideoCapture capture;
-
-	//open VideoCapture etc...
-	if (argc > 1)
-	{
-		capture = VideoCapture(argv[1]);
-	}
+	
+	if (argc > 2)
+		capture = VideoCapture(argv[2]);
 	else
-	{
 		capture = VideoCapture(DEFAULT_PATH2);
-	}
 
+	// check if video could be opend
 	if (!capture.isOpened())
 	{
 		cout << "error at opening video" << endl;
@@ -60,7 +50,7 @@ int main(int argc, char **argv)
 	}
 	
 	// 13 diffenernt sectors
-	int histogramValues[13];
+	int histogramValues[NR_OF_BINS];
 	vector<int*> histograms;
 
 	vector<Point2f> currFeatures;
@@ -101,35 +91,22 @@ int main(int argc, char **argv)
 		vector<float> err;
 
 		if (prevFeatures.size() == currFeatures.size())
-		{
 			calcOpticalFlowPyrLK(prevFrame, gray, prevFeatures, currFeatures, status, err);
-		}
 
-		//visualize result:
-		for (int i = 0; i < status.size(); i++)
-		{
-			if (status[i] != 0)
-			{
-				//point could be found
-				Point pt1(ceil(prevFeatures[i].x), ceil(prevFeatures[i].y));
-				Point pt2(ceil(currFeatures[i].x), ceil(currFeatures[i].y));
-				line(frame, pt1, pt2, Scalar(255, 255, 255));
-			}
-		}
-
+		// for testing purposes - visualize result
+		VisulizeOpticalFlow(frame, prevFeatures, currFeatures, status);
+		
 		// check if a new shot was found
 		if (nextShot)
 		{
-			cout << "new shot - create histogram" << endl;
+			cout << "new shot - create histogram";
 			
-			// set values to 0;
-			for (int i = 0; i < sizeof(histogramValues) / sizeof(*histogramValues); i++)
-			{
+			// remove values from array
+			for (int i = 0; i < NR_OF_BINS; i++)
 				histogramValues[i] = 0;
-			}
 
 			// Shotbegin;Shotend;JumpOff
-			vector<string> groundTruthElements;
+			vector<string> groundTruthElements;								//TODO: optimize with array of size 3
 			split(groundTruthValues[lineCount], ';', groundTruthElements);
 			shotEnd = stoi(groundTruthElements[1]);
 			nextShot = false;
@@ -141,6 +118,9 @@ int main(int argc, char **argv)
 			int temp[13] = { 0,0,0,0,0,0,0,0,0,0,0,0,0 };
 			AddValuesToHistogram(histogramValues, prevFeatures, currFeatures, status);
 			copy(begin(histogramValues), end(histogramValues), begin(temp));
+			
+			// for testing only
+			VisulizeHistogramValues(temp);
 			histograms.push_back(temp);
 			lineCount++;
 			nextShot = true;
@@ -160,9 +140,7 @@ int main(int argc, char **argv)
 		int key = waitKey(1);
 
 		if (key == 32)
-		{
 			prevFeatures.clear(); //force new sampling in next step
-		}
 
 		frameCount++;
 		//cout << frameCount << endl;
@@ -172,6 +150,30 @@ int main(int argc, char **argv)
 	capture.release();
 
 	return 0;
+}
+
+void VisulizeOpticalFlow(Mat &frame, vector<Point2f> prevFeatures, vector<Point2f> currFeatures, vector<uchar> status)
+{
+	for (int i = 0; i < status.size(); i++)
+	{
+		if (status[i] != 0)
+		{
+			//point could be found
+			Point pt1(ceil(prevFeatures[i].x), ceil(prevFeatures[i].y));
+			Point pt2(ceil(currFeatures[i].x), ceil(currFeatures[i].y));
+			line(frame, pt1, pt2, Scalar(255, 255, 255));
+		}
+	}
+}
+
+void VisulizeHistogramValues(int histogram[])
+{
+	cout << "\t[ ";
+	
+	for (int i = 0; i < NR_OF_BINS; i++)
+		cout << to_string(histogram[i]) << " ";
+
+	cout << "]" << endl;
 }
 
 vector<string> &split(const string &s, char delim, vector<string> &elems)
@@ -208,12 +210,10 @@ vector<string> GetGroundTruthValues(string filePath)
 	return groundTruthValues;
 }
 
-void PrintGroundTruthValues(vector<string> values)
+void VisulizeGroundTruthValues(vector<string> values)
 {
 	for each (string s in values)
-	{
 		cout << s << endl;
-	}
 }
 
 void AddValuesToHistogram(int histogramValues[], vector<Point2f> prevFeatures, vector<Point2f> currFeatures, vector<uchar> status)
@@ -233,14 +233,12 @@ void AddValuesToHistogram(int histogramValues[], vector<Point2f> prevFeatures, v
 
 			histogramValues[index]++;
 		}
-
 	}
 }
 
+// distinguish in this example between 13 directions including non-direction
 int CalculateHistogramIndex(float degree)
 {
-	// distinguish in this example between 13 directions including non-direction
-
 	if (degree == 0)
 		return 0;
 	else if (degree <= 15 && degree > 345 && degree < 360) // exclusive [15-0) (359-344]
@@ -269,20 +267,4 @@ int CalculateHistogramIndex(float degree)
 		return 12;
 	else
 		return -1;
-}
-
-void calculateDirection()
-{
-
-}
-
-Mat calculateHistogram(Mat& image, int histSize)
-{
-	float range[] = { 0, 256 };			// value range
-	const float *histRange = { range };
-
-	Mat hist;
-	calcHist(&image, 1, 0, Mat(), hist, 1, &histSize, &histRange, true, false);
-
-	return hist;
 }
